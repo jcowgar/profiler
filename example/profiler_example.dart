@@ -1,4 +1,4 @@
-import 'package:profiler/profiler.dart';
+import '../lib/profiler.dart';
 
 void main() async {
   final p = Profiler();
@@ -14,9 +14,7 @@ void main() async {
   await Future.delayed(Duration(microseconds: 192839));
   p.end();
 
-  var report = p.report();
-
-  for (final r in report) {
+  for (final r in p.report()) {
     print(r);
   }
 
@@ -27,14 +25,23 @@ void main() async {
   p2.act();
   p2.act();
   p2.act();
-  await Future.delayed(Duration(seconds: 120));
+  await Future.delayed(Duration(seconds: 12));
   p2.push('execution');
   p2.act();
   await Future.delayed(Duration(milliseconds: 283));
   p2.pop();
-  await Future.delayed(Duration(seconds: 178));
+  await Future.delayed(Duration(seconds: 1));
 
   for (final r in p2.report()) {
+    print(r);
+  }
+
+  final p3 = Profiler();
+  await p3.profile('Hello World', () async {
+    await Future.delayed(Duration(seconds: 3));
+  });
+
+  for (final r in p3.report()) {
     print(r);
   }
 }

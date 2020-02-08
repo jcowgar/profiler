@@ -50,5 +50,18 @@ class Profiler {
     }
   }
 
+  Future<void> profile(String sectionName, dynamic code()) async {
+    push(sectionName);
+    try {
+      final result = code();
+      if (result is Future) {
+        await result;
+      }
+      act();
+    } finally {
+      pop();
+    }
+  }
+
   Iterable<Section> report() => _sectionOrder.map((s) => _sections[s]);
 }
